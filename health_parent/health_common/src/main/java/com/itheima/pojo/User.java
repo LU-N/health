@@ -1,8 +1,11 @@
 package com.itheima.pojo;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,6 +50,13 @@ public class User implements Serializable {
      * 对应角色集合
      */
     private Set<Role> roles = new HashSet<Role>(0);
+
+    public User(String username, String passwordInDb, List<GrantedAuthority> list) {
+    }
+
+    public User() {
+
+    }
 
     public Integer getId() {
         return id;
