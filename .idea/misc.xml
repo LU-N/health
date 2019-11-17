@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/health_parent" />
     <file type="web" url="file://$PROJECT_DIR$/quartzdemo" />
+    <file type="web" url="file://$PROJECT_DIR$/springsecuritydemo" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -17,6 +18,7 @@
         <option value="$PROJECT_DIR$/health_parent/health_jobs/pom.xml" />
         <option value="$PROJECT_DIR$/health_parent/health_mobile/pom.xml" />
         <option value="$PROJECT_DIR$/health_parent/health_backend/pom.xml" />
+        <option value="$PROJECT_DIR$/springsecuritydemo/pom.xml" />
       </list>
     </option>
   </component>
