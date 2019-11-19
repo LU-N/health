@@ -7,96 +7,107 @@ import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
 import com.itheima.pojo.CheckItem;
 import com.itheima.service.CheckItemService;
-
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import java.util.List;
 
-
 /**
- * 体检检查项管理
- *
+ * 检查项管理
  * @author JinLu
- * @date 2019/11/9 14:37
  */
+
 @RestController
 @RequestMapping("/checkitem")
 public class CheckItemController {
+    /**
+     * 查找服务
+     */
     @Reference
     private CheckItemService checkItemService;
 
     /**
-     * 新增
+     * 新增检查项
+     *
+     * @param checkItem
+     * @return
      */
-    @RequestMapping("/add.do")
-    public Result add(@RequestBody CheckItem checkItem) {
-        try {
+    @RequestMapping("/add")
+    public Result add(@RequestBody CheckItem checkItem){
+        try{
             checkItemService.add(checkItem);
-        } catch (Exception e) {
+        }catch (Exception e){
+            e.printStackTrace();
+            //服务调用失败
             return new Result(false, MessageConstant.ADD_CHECKITEM_FAIL);
         }
-        return new Result(true, MessageConstant.ADD_CHECKITEM_SUCCESS);
+        return  new Result(true, MessageConstant.ADD_CHECKITEM_SUCCESS);
     }
 
     /**
-     * 查找
+     * 检查项分页查询
      *
      * @param queryPageBean
      * @return
      */
-    @RequestMapping("/findPage.do")
-    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
+    @RequestMapping("/findPage")
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult pageResult = checkItemService.pageQuery(queryPageBean);
         return pageResult;
     }
 
     /**
-     * 删除
+     * 删除检查项
      *
      * @param id
      * @return
      */
-    @RequestMapping("/delete.do")
-    public Result delete(Integer id) {
-        try {
-            checkItemService.delete(id);
-        } catch (RuntimeException e) {
-            return new Result(false, e.getMessage());
-        } catch (Exception e) {
+    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
+    @RequestMapping("/delete")
+    public Result delete(Integer id){
+        try{
+            checkItemService.deleteById(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            //服务调用失败
             return new Result(false, MessageConstant.DELETE_CHECKITEM_FAIL);
         }
-        return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
+        return  new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
     }
 
     /**
-     * edit
+     * 编辑检查项
+     *
      * @param checkItem
      * @return
      */
-    @RequestMapping("/edit.do")
-    public Result edit(@RequestBody CheckItem checkItem) {
-        try {
+    @RequestMapping("/edit")
+    public Result edit(@RequestBody CheckItem checkItem){
+        try{
             checkItemService.edit(checkItem);
-        } catch (Exception e) {
-            new Result(false, MessageConstant.EDIT_CHECKITEM_FAIL);
+        }catch (Exception e){
+            e.printStackTrace();
+            //服务调用失败
+            return new Result(false, MessageConstant.EDIT_CHECKITEM_FAIL);
         }
-        return new Result(true, MessageConstant.EDIT_CHECKITEM_SUCCESS);
+        return  new Result(true, MessageConstant.EDIT_CHECKITEM_SUCCESS);
     }
 
     /**
-     * findById
+     * 根据id查找
+     *
      * @param id
      * @return
      */
-    @RequestMapping("/findById.do")
-    public Result findById(Integer id) {
-        try {
+    @RequestMapping("/findById")
+    public Result findById(Integer id){
+        try{
             CheckItem checkItem = checkItemService.findById(id);
-            return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, checkItem);
-        } catch (Exception e) {
+            return  new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItem);
+        }catch (Exception e){
             e.printStackTrace();
             //服务调用失败
             return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
@@ -104,18 +115,19 @@ public class CheckItemController {
     }
 
     /**
-     * 检查项信息
+     * findAll
      *
      * @return
      */
-    @RequestMapping("/findAll.do")
-    public Result findAll() {
-        List<CheckItem> checkItemList = checkItemService.findAll();
-        if (checkItemList != null && checkItemList.size() > 0) {
-            Result result = new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS);
-            result.setData(checkItemList);
-            return result;
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        try{
+            List<CheckItem> list = checkItemService.findAll();
+            return  new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS,list);
+        }catch (Exception e){
+            e.printStackTrace();
+            //服务调用失败
+            return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
         }
-        return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
     }
 }

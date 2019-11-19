@@ -3,6 +3,8 @@ package com.itheima.service;
 
 import com.itheima.pojo.Member;
 
+import java.util.List;
+
 /**
  * @author JinLu
  * @date 2019/11/16 19:52
@@ -20,4 +22,12 @@ public interface MemberService {
      * @param member
      */
     public void add(Member member);
+
+    /**
+     * 根据月份
+     *
+     * @param months
+     * @return
+     */
+    List<Integer> findMemberCountByMonths(List<String> months);
 }

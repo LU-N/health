@@ -1,6 +1,5 @@
 package com.itheima.service;
 
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -8,29 +7,28 @@ import com.itheima.dao.CheckItemDao;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.CheckItem;
+import com.itheima.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 /**
- * 检查服务项
+ * 检查项服务
  *
  * @author JinLu
- * @date 2019/11/9 15:12
  */
 @Service(interfaceClass = CheckItemService.class)
 @Transactional
 public class CheckItemServiceImpl implements CheckItemService {
     /**
-     * 注入到dao对象
+     * 注入DAO对象
      */
     @Autowired
     private CheckItemDao checkItemDao;
 
     /**
-     * 新增
+     * 添加
      *
      * @param checkItem
      */
@@ -47,45 +45,38 @@ public class CheckItemServiceImpl implements CheckItemService {
      */
     @Override
     public PageResult pageQuery(QueryPageBean queryPageBean) {
-        //获取查询条件
-
-        //当前页码
         Integer currentPage = queryPageBean.getCurrentPage();
-        //当前页面显示条数
         Integer pageSize = queryPageBean.getPageSize();
-        //当前查询条件
+        //查询条件
         String queryString = queryPageBean.getQueryString();
-
-        //使用mybatis的分页插件助手显示信息
-        PageHelper.startPage(currentPage, pageSize);
-        //调用dao进行条件查询
+        //完成分页查询，基于mybatis框架提供的分页助手插件完成
+        PageHelper.startPage(currentPage,pageSize);
+        //select * from t_checkitem limit 0,10
         Page<CheckItem> page = checkItemDao.selectByCondition(queryString);
-        //总页数
         long total = page.getTotal();
-        //获取当前页数据
         List<CheckItem> rows = page.getResult();
-
-        return new PageResult(total, rows);
+        return new PageResult(total,rows);
     }
 
     /**
-     * 删除
+     * 根据ID删除检查项
      *
      * @param id
      */
     @Override
-    public void delete(Integer id) throws RuntimeException {
-        //查询当前检查项是否和检查组关联
+    public void deleteById(Integer id) {
+        //判断当前检查项是否已经关联到检查组
         long count = checkItemDao.findCountByCheckItemId(id);
-        if (count > 0) {
-            //当前检查项被引用，不能删除
-            throw new RuntimeException("当前检查项被引用，不能删除");
+        if(count > 0){
+            //当前检查项已经被关联到检查组，不允许删除
+            new RuntimeException();
         }
         checkItemDao.deleteById(id);
     }
 
     /**
      * 编辑
+     *
      * @param checkItem
      */
     @Override
@@ -94,7 +85,8 @@ public class CheckItemServiceImpl implements CheckItemService {
     }
 
     /**
-     * 回显
+     * 根据id查找
+     *
      * @param id
      * @return
      */
@@ -104,7 +96,8 @@ public class CheckItemServiceImpl implements CheckItemService {
     }
 
     /**
-     * 检查项信息
+     * findAll
+     *
      * @return
      */
     @Override

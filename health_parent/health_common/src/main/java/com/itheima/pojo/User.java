@@ -51,13 +51,6 @@ public class User implements Serializable {
      */
     private Set<Role> roles = new HashSet<Role>(0);
 
-    public User(String username, String passwordInDb, List<GrantedAuthority> list) {
-    }
-
-    public User() {
-
-    }
-
     public Integer getId() {
         return id;
     }

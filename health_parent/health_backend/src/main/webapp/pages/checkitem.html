@@ -250,7 +250,7 @@
                             if (response.data.flag) {
                                 //编辑成功，显示成功信息
                                 this.$message({
-                                    message:response.data.message,
+                                    message: response.data.message,
                                     type: 'success'
                                 });
                             } else {
@@ -370,13 +370,26 @@
                             //调用分页，获取最新分页数据
                             this.findPage();
                         }
+                    }).catch((r) => {
+                        this.showMessage(r);
                     });
                 }).catch(() => {
                     this.$message({
-                        type : "info",
-                        message : "已取消删除操作"
+                        type: "info",
+                        message: "已取消删除操作"
                     });
                 });
+            },
+            //权限不足提示
+            showMessage(r) {
+                if (r == 'Error: Request failed with status code 403') {
+                    //权限不足
+                    this.$message.error('无访问权限');
+                    return;
+                } else {
+                    this.$message.error('未知错误');
+                    return;
+                }
             }
         }
     });

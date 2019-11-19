@@ -7,45 +7,49 @@ import com.itheima.pojo.CheckItem;
 import java.util.List;
 
 /**
- * 检查项服务接口
- *
+ * 服务接口
  * @author JinLu
  */
 public interface CheckItemService {
     /**
-     * add
+     * 添加
      * @param checkItem
      */
     public void add(CheckItem checkItem);
 
     /**
-     * pageQuery
+     * 分页查询
+     *
      * @param queryPageBean
      * @return
      */
     public PageResult pageQuery(QueryPageBean queryPageBean);
 
     /**
-     * 根据id删除
+     * 根据id查询
+     *
      * @param id
      */
-    public void delete(Integer id);
+    public void deleteById(Integer id);
 
     /**
      * 编辑
+     *
      * @param checkItem
      */
     public void edit(CheckItem checkItem);
 
     /**
-     * 根据id查询
+     * 根据id查找
+     *
      * @param id
      * @return
      */
     public CheckItem findById(Integer id);
 
     /**
-     * 检查项信息
+     * findAll
+     *
      * @return
      */
     public List<CheckItem> findAll();
