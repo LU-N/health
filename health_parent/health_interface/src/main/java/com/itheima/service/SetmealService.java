@@ -5,6 +5,7 @@ import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author JinLu
@@ -38,4 +39,11 @@ public interface SetmealService {
      * @return
      */
     public Setmeal findById(int id);
+
+    /**
+     * 查找套餐数量
+     *
+     * @return
+     */
+    public List<Map<String,Object>> findSetmealCount();
 }

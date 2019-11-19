@@ -16,5 +16,6 @@
         <module name="health_common" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="7" />
   </component>
 </project>

@@ -28,9 +28,43 @@ public interface OrderDao {
      * @return
      */
     public Map findById4Detail(Integer id);
+
+    /**
+     * 按日期查找订单计数
+     *
+     * @param date
+     * @return
+     */
     public Integer findOrderCountByDate(String date);
+
+    /**
+     * 在日期后查找订单计数
+     *
+     * @param date
+     * @return
+     */
     public Integer findOrderCountAfterDate(String date);
+
+    /**
+     * 查找访问者按日期计数
+     *
+     * @param date
+     * @return
+     */
     public Integer findVisitsCountByDate(String date);
+
+    /**
+     * 查找日期后的访问计数
+     *
+     * @param date
+     * @return
+     */
     public Integer findVisitsCountAfterDate(String date);
+
+    /**
+     * 获取热门套餐
+     *
+     * @return
+     */
     public List<Map> findHotSetmeal();
 }

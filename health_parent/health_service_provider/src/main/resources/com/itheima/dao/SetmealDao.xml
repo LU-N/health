@@ -42,7 +42,7 @@
     </insert>
 
     <!--根据条件进行查询-->
-    <select id="findByCondition" parameterType="string" resultType="Setmeal">
+    <select id="findByCondition" parameterType="string" resultType="com.itheima.pojo.Setmeal">
         select * from t_setmeal
         <if test="value != null and value != '' and value.length > 0">
             where code = #{value} or name = #{value} or helpCode = #{value}
@@ -50,12 +50,16 @@
     </select>
 
     <!--套餐数据查询-->
-    <select id="findAll" resultType="Setmeal">
+    <select id="findAll" resultType="com.itheima.pojo.Setmeal">
         select * from t_setmeal
     </select>
 
     <!--套餐id-->
     <select id="findById" resultMap="findByIdResultMap">
         select * from t_setmeal  where id=#{id}
+    </select>
+    <select id="findSetmealCount" resultType="java.util.Map">
+        select s.name,count(o.id) as value
+        from t_order o ,t_setmeal s where o.setmeal_id = s.id group by s.name
     </select>
 </mapper>

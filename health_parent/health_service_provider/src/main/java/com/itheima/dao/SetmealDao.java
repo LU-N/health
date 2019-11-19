@@ -42,4 +42,11 @@ public interface SetmealDao {
      * @return
      */
     public Setmeal findById(int id);
+
+    /**
+     * 查找套餐数量
+     *
+     * @return
+     */
+    public List<Map<String, Object>> findSetmealCount();
 }

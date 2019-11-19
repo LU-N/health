@@ -16,6 +16,19 @@
             <artifactId>health_interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <!--
+                compile:默认值，适用于所有阶段（表明该jar包在编译、运行以及测试中路径俊可见），
+                并且会随着项目直接发布。
+                tomcat中也有servlet-api包，运行时就发生了冲突
+                provided表明该jar包只在编译和测试的时候起作用
+            -->
+            <scope>provided</scope>
+            <!--<scope>compile</scope>-->
+        </dependency>
     </dependencies>
     <build>
         <plugins>

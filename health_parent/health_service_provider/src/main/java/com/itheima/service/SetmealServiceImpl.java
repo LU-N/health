@@ -14,6 +14,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 体检套餐服务
@@ -77,6 +78,16 @@ public class SetmealServiceImpl implements SetmealService {
     @Override
     public Setmeal findById(int id) {
         return setmealDao.findById(id);
+    }
+
+    /**
+     * 查找套餐数量
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findSetmealCount() {
+        return setmealDao.findSetmealCount();
     }
 
     /**
