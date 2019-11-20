@@ -26,4 +26,11 @@ public interface OrderService {
      * @throws Exception
      */
     public Map findById(Integer id) throws Exception;
+
+    /**
+     * 删除预约数据
+     *
+     * @param date2String
+     */
+    void delete(String date2String);
 }

@@ -14,9 +14,8 @@
 							http://www.springframework.org/schema/context/spring-context.xsd">
     <!--开启spring注解使用-->
     <context:annotation-config></context:annotation-config>
-    <!--注册自定义Job-->
+    <!--注册自定义imgClearJob-->
     <bean id="clearImgJob" class="com.itheima.jobs.ClearImgJob"></bean>
-
     <bean id="jobDetail"
           class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 注入目标对象 -->
@@ -30,19 +29,61 @@
         <property name="jobDetail" ref="jobDetail"/>
         <!-- 指定触发的时间，基于Cron表达式 -->
         <property name="cronExpression">
+            <value>0 0 2 * * ?</value>
+            <!--<value>0/10 * * * * ?</value>-->
+        </property>
+    </bean>
+
+
+    <!--注册自定义Job-->
+    <bean id="clearOrder" class="com.itheima.jobs.ClearOrder"></bean>
+    <bean id="clearDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 注入目标对象 -->
+        <property name="targetObject" ref="clearOrder"/>
+        <!-- 注入目标方法 -->
+        <property name="targetMethod" value="clear"/>
+    </bean>
+    <!-- 注册一个触发器，指定任务触发的时间 -->
+    <bean id="myOrder" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- 注入JobDetail -->
+        <property name="jobDetail" ref="clearDetail"/>
+        <!-- 指定触发的时间，基于Cron表达式 -->
+        <property name="cronExpression">
             <!--
             <value>0 0 2 * * ?</value>
+            me
             -->
             <value>0/10 * * * * ?</value>
         </property>
     </bean>
+
+
+
     <!-- 注册一个统一的调度工厂，通过这个调度工厂调度任务 -->
     <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
         <!-- 注入多个触发器 -->
         <property name="triggers">
             <list>
                 <ref bean="myTrigger"/>
+                <ref bean="myOrder"/>
             </list>
         </property>
     </bean>
+
+    <!-- 指定应用名称 -->
+    <dubbo:application name="health_jobs"/>
+    <!--指定服务注册中心地址-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!--批量扫描-->
+    <dubbo:annotation package="com.itheima"/>
+    <!--
+    我这边刚刚测试成功了
+        超时全局设置 10分钟
+        check=false 不检查服务提供方，开发阶段建议设置为false
+        check=false 不检查服务提供方，开发阶段建议设置为false
+        check=true 启动时检查服务提供方，如果服务提供方没有启动则报错 -->
+    <dubbo:consumer timeout="600000" check="false"/>
+
 </beans>

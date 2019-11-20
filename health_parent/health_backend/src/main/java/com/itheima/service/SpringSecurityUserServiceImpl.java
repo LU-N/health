@@ -39,6 +39,8 @@ public class SpringSecurityUserServiceImpl implements UserDetailsService {
         if (user == null) {
             //用户名不存在
             return null;
+
+
         }
 
         List<GrantedAuthority> list = new ArrayList<>();

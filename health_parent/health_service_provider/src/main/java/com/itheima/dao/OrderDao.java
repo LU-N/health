@@ -67,4 +67,13 @@ public interface OrderDao {
      * @return
      */
     public List<Map> findHotSetmeal();
+
+    /**
+     * 删除预约数据
+     *
+     * @param date2String
+     */
+    void delete(String date2String);
+
+
 }

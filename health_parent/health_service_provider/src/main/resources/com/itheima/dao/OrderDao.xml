@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.itheima.dao.OrderDao" >
+<mapper namespace="com.itheima.dao.OrderDao">
     <resultMap id="baseResultMap" type="com.itheima.pojo.Order">
         <id column="id" property="id"/>
         <result column="member_id" property="memberId"/>
@@ -18,6 +18,11 @@
         insert into t_order(member_id,orderDate,orderType,orderStatus,setmeal_id)
         values (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
     </insert>
+
+    <!--删除-->
+    <delete id="delete" parameterType="string">
+        delete from t_order where orderDate &lt; #{value}
+    </delete>
 
     <!--动态条件查询-->
     <select id="findByCondition" parameterType="com.itheima.pojo.Order" resultMap="baseResultMap">

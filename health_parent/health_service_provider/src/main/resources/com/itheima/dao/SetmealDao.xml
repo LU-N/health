@@ -24,7 +24,7 @@
         </collection>
     </resultMap>
     <!--插入套餐数据-->
-    <insert id="add" parameterType="Setmeal">
+    <insert id="add" parameterType="com.itheima.pojo.Setmeal">
         <!--通过mybatis框架提供的selectKey标签获得自增产生的ID值-->
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
             select LAST_INSERT_ID()

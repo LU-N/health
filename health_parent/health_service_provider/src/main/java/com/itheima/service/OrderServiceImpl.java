@@ -12,6 +12,7 @@ import com.itheima.pojo.OrderSetting;
 import com.itheima.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private MemberDao memberDao;
-
     @Autowired
     private OrderDao orderDao;
 
@@ -92,6 +92,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 根据id查询预约信息，包括体检人信息、套餐信息
+     *
      * @param id
      * @return
      * @throws Exception
@@ -101,9 +102,20 @@ public class OrderServiceImpl implements OrderService {
         Map map = orderDao.findById4Detail(id);
         if (map != null) {
             //处理日期格式
-            Date orderDate =  (Date) map.get("orderDate");
-            map.put("orderDate",DateUtils.parseDate2String(orderDate));
+            Date orderDate = (Date) map.get("orderDate");
+            map.put("orderDate", DateUtils.parseDate2String(orderDate));
         }
         return map;
+    }
+
+    /**
+     * 删除预约数据
+     *
+     * @param date2String
+     */
+    @Override
+    public void delete(String date2String) {
+        System.out.println("delete is running .....");
+        orderDao.delete(date2String);
     }
 }
