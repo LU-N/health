@@ -1,12 +1,16 @@
 package com.itheima.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.constant.MessageConstant;
 import com.itheima.constant.RedisConstant;
 import com.itheima.dao.SetmealDao;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
+import com.itheima.entity.Result;
 import com.itheima.pojo.Setmeal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +52,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * pageQuery
+     *
      * @param queryPageBean
      * @return
      */
@@ -63,21 +68,47 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * findAll
+     *
      * @return
      */
     @Override
     public List<Setmeal> findAll() {
-        return setmealDao.findAll();
+        //从redis中查询数据
+        String setmeal = jedisPool.getResource().get("setmeal");
+        //判断查询的数据是否为空
+        if (setmeal == null || setmeal.length() == 0) {
+            //如果为空，从数据库查询
+            List<Setmeal> list = setmealDao.findAll();
+            //将集合转换成json格式
+            String json = JSON.toJSONString(list);
+            //存入reids
+            jedisPool.getResource().set("setmeal", json);
+            return list;
+        } else {
+            //将获得的json格式的数据转换成对象(数组格式)
+            List<Setmeal> list = JSON.parseArray(setmeal, Setmeal.class);
+            return list;
+        }
     }
 
     /**
      * 展示套餐信息(id)
+     *
      * @param id
      * @return
      */
     @Override
     public Setmeal findById(int id) {
-        return setmealDao.findById(id);
+        String setid = jedisPool.getResource().get("setid" + id);
+        if (setid == null || setid.length() == 0) {
+            Setmeal byId = setmealDao.findById(id);
+            String jsonString = JSON.toJSONString(byId);
+            jedisPool.getResource().set("setid" + id,jsonString);
+            return byId;
+        } else {
+            Setmeal setmeal = JSON.parseObject(setid, Setmeal.class);
+            return setmeal;
+        }
     }
 
     /**

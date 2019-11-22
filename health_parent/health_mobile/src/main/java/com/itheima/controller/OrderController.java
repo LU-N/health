@@ -41,10 +41,7 @@ public class OrderController {
         //从Redis中获取缓存的验证码，key为手机号 +RedisConstant.SENDTYPE_ORDER
         String codeInRedis = jedisPool.getResource().get(telephone + RedisMessageConstant.SENDTYPE_ORDER);
         String validateCode = (String)map.get("validateCode");
-        //校验手机验证码
-//        if (codeInRedis == null || !codeInRedis.equals(validateCode)) {
-//            return new Result(false, MessageConstant.VALIDATECODE_ERROR);
-//        }
+
         Result result = null;
         //调用体检预约服务
         try {
@@ -69,6 +66,7 @@ public class OrderController {
 
     /**
      * 根据id查询预约信息，包括套餐信息和会员信息
+     *
      * @param id
      * @return
      */

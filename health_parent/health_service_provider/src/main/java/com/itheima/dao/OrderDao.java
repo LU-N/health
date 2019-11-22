@@ -74,6 +74,4 @@ public interface OrderDao {
      * @param date2String
      */
     void delete(String date2String);
-
-
 }
